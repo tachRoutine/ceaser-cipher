@@ -12,7 +12,7 @@ func main() {
 	operationType := flag.String("type", "Encrypt", "type of operation: Encrypt or Decrypt")
 	fmt.Println("Number of substitutions:", *shift)
 	fmt.Println("Content to be encrypted:", *content)
-
+	flag.Parse()
 	switch *operationType {
 	case "Encrypt":
 		fmt.Println("Encrypted content:", ceaser.Encrypt(*content, *shift))
@@ -21,5 +21,6 @@ func main() {
 	default:
 		fmt.Println("Invalid type. Use 'Encrypt' or 'Decrypt'.")
 	}
-	flag.Parse()
+	
+
 }
