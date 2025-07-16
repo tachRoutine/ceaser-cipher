@@ -1,10 +1,14 @@
 package ceaser
 
-import "strings"
+import (
+	"fmt"
+	"strings"
+)
 
 func Encrypt(text string, shift int) string {
 	var result strings.Builder
 	shift = shift % 26
+	fmt.Printf("Encrypting with shift: %d\n", shift)
 
 	for _, c := range text {
 		switch {
@@ -13,7 +17,7 @@ func Encrypt(text string, shift int) string {
 		case c >= 'a' && c <= 'z':
 			result.WriteByte(byte((int(c-'a')+shift)%26 + 'a'))
 		default:
-			result.WriteByte(byte(c)) // leave unchanged
+			result.WriteByte(byte(c))
 		}
 	}
 
@@ -21,6 +25,5 @@ func Encrypt(text string, shift int) string {
 }
 
 func Decrypt(text string, shift int) string {
-	// Decryption is simply encryption with negative shift
 	return Encrypt(text, 26 - (shift % 26))
 }
