@@ -1,25 +1,26 @@
 package ceaser
 
-const Alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+import "strings"
 
 func Encrypt(text string, shift int) string {
-	for i := 0; i < len(text); i++ {
-		if text[i] >= 'A' && text[i] <= 'Z' {
-			text = text[:i] + string((text[i]-'A'-byte(shift)+26)%26+'A') + text[i+1:]
-		} else if text[i] >= 'a' && text[i] <= 'z' {
-			text = text[:i] + string((text[i]-'a'-byte(shift)+26)%26+'a') + text[i+1:]
+	var result strings.Builder
+	shift = shift % 26
+
+	for _, c := range text {
+		switch {
+		case c >= 'A' && c <= 'Z':
+			result.WriteByte(byte((int(c-'A')+shift)%26 + 'A'))
+		case c >= 'a' && c <= 'z':
+			result.WriteByte(byte((int(c-'a')+shift)%26 + 'a'))
+		default:
+			result.WriteByte(byte(c)) // leave unchanged
 		}
 	}
-	return text
+
+	return result.String()
 }
 
 func Decrypt(text string, shift int) string {
-	for i := 0; i < len(text); i++ {
-		if text[i] >= 'A' && text[i] <= 'Z' {
-			text = text[:i] + string((text[i]-'A'-byte(shift)+26)%26+'A') + text[i+1:]
-		} else if text[i] >= 'a' && text[i] <= 'z' {
-			text = text[:i] + string((text[i]-'a'-byte(shift)+26)%26+'a') + text[i+1:]
-		}
-	}
-	return text
+	// Decryption is simply encryption with negative shift
+	return Encrypt(text, 26 - (shift % 26))
 }
